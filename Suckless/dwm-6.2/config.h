@@ -5,7 +5,7 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "hermit:size=9" };
+static const char *fonts[]          = { "hermit:size=11" };
 static const char dmenufont[]       = "hermit:size=10";
 static const char col_gray1[]       = "#101119";
 static const char col_gray2[]       = "#959796";
@@ -73,7 +73,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,		XK_o,      spawn,          {.v = browsercmd } },
+	{ MODKEY,			XK_F10,	   spawn,          SHCMD("sudo xkill") },
 	{ MODKEY,			XK_F11,	   spawn,          SHCMD("sleep 0.2;/home/anton/.scripts/screenshot.sh") },
+	{ MODKEY,			XK_F12,	   spawn,          SHCMD("qalculate") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
