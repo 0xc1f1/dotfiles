@@ -71,7 +71,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *browsercmd[] = { "sudo", "-u", "ff", "firefox", NULL };
 static const char *dmenucmd[] = { "dmenu_run", NULL };
-static const char *termcmd[]  = { "tabbed", "-r", "2", "st", "-w", "''", "/bin/zsh", NULL };
+//static const char *termcmd[]  = { "tabbed", "-r", "2", "st", "-w", "''", "/bin/zsh", NULL };
+static const char *termcmd[]  = { "st", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */

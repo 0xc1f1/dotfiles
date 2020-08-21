@@ -5,7 +5,7 @@ float alpha = 80;
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "xos4 Terminus:size=11";
+static char *font = "xos4 Terminus:size=10";
 static int borderpx = 2;
 /*
  * What program is execed by st depends of these precedence rules:
