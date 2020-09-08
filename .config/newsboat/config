@@ -1,1 +1,25 @@
-/home/anton/.config/newsboat/config
+auto-reload yes
+refresh-on-startup yes
+
+browser "firefox"
+macro j set browser "mpv --geometry=1400 --keep-open %u &" ; open-in-browser ; set browser "firefox"
+macro m set browser "~/.scripts/mpv %u &" ; goto-url 4 ; set browser "firefox"
+macro l set browser "rtv %u" ; open-in-browser ; set browser "firefox"
+macro o set browser "firefox %u" ; open-in-browser ; set browser "firefox"
+
+# unbind keys
+# unbind-key ENTER
+unbind-key j
+unbind-key k
+unbind-key J
+unbind-key K
+
+# bind keys - vim style
+bind-key j down
+bind-key k up
+bind-key l open
+bind-key h quit
+
+# proxy
+proxy-type socks5h
+proxy 127.0.0.1:9050
