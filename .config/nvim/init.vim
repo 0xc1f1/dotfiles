@@ -25,11 +25,6 @@ map gre <ESC>a //
 map gcc <ESC>i /*  */<ESC>hh
 map gff <ESC>0i//<ESC>
 
-" nnoremap <C-J> <C-W>j
-" nnoremap <C-K> <C-W>k
-" nnoremap <C-L> <C-W>l
-" nnoremap <C-H> <C-W>h
-
 map <C-n> :NERDTreeToggle<CR>
 
 map E $
