@@ -1,5 +1,7 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+autocmd BufWritePost *.tex silent! execute "!pdflatex % >/dev/null 2>&1 &" | redraw!
+
+" set nocompatible              " be iMproved, required
+" filetype off                  " required
 
 set exrc
 set secure
@@ -14,33 +16,34 @@ set noexpandtab
 inoremap jk <ESC>
 vnoremap jk <ESC>
 
-map fe :!make<CR>
-map fre :!make run<CR>
-map fw :!sudo make clean install<CR>
-map fa :tabe
-map K :tabn<CR>
-map J :tabp<CR>
+nnoremap fe :!make<CR>
+nnoremap fre :!make run<CR>
+nnoremap fw :!sudo make clean install<CR>
+nnoremap fa :tabe
+nnoremap K :tabn<CR>
+nnoremap J :tabp<CR>
 
-map gre <ESC>a //
-map gcc <ESC>i /*  */<ESC>hh
-map gff <ESC>0i//<ESC>
-
-map <C-n> :NERDTreeToggle<CR>
-
-map E $
-map B 0
-
-inoremap fs <ESC>:w<CR>
-vnoremap fs <ESC>:w<CR>
-map fs :w<CR>
-map fq :q<CR>
-map ffq :q!<CR>
+nnoremap gre <ESC>a //
+nnoremap gcc <ESC>i /*  */<ESC>hh
+nnoremap gff <ESC>0i//<ESC>
 
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
 
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+nnoremap E $
+nnoremap B 0
+
+inoremap fs <ESC>:w<CR>
+vnoremap fs <ESC>:w<CR>
+nnoremap fs :w<CR>
+nnoremap fq :q<CR>
+nnoremap ffq :q!<CR>
+
 call plug#begin('~/.vim/plugged')
 Plug 'dylanaraps/fff.vim'
+Plug 'junegunn/goyo.vim'
 call plug#end()
