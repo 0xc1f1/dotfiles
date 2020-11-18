@@ -1,0 +1,39 @@
+#!/usr/bin/python
+import feedparser
+from bs4 import BeautifulSoup
+import subprocess
+import os
+import time
+import youtube_dl
+
+ydl_opts = {
+        'output': '',
+}
+
+redditPosts = feedparser.parse("https://reddit.com/r/livestreamfail/.rss")
+
+currentTime = time.time()
+directoryFiles = os.listdir("/home/anton/Media/Videos/livestreamfails/")
+
+for i in range(0,24):
+    entry = redditPosts.entries[i]
+
+    isIn = False
+
+    soup = BeautifulSoup(entry['content'][0]['value'], features="xml")
+    for a in soup.find_all('a',href=True):
+        if "clips.twitch" in a['href']:
+            print(a['href'])
+            for j in range(0,len(directoryFiles)):
+                if a['href'].replace("/", "-") in directoryFiles[j]:
+                    isIn = True
+            if not isIn:
+                try:
+                    ydl_opts = {
+                        'outtmpl': "/home/anton/Media/Videos/livestreamfails/"+a['href'].replace("/","-"),
+                    }
+                    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                        ydl.download([a['href']])
+                except Exception:
+                    pass
+print("done")

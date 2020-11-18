@@ -1,0 +1,5 @@
+#!/bin/sh
+mpd -v --no-daemon --stdout &
+picom -b
+newsboat -x reload &
+python ~/Projects/livestreamFails/getNew.py &

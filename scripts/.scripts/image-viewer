@@ -1,0 +1,5 @@
+#!/bin/sh
+tmpFile="/tmp/"$(head /dev/random | tr -dc A-Za-z0-9 | head -c 13 ; echo '')
+curl --output $tmpFile "$1"
+sxiv $tmpFile
+rm $tmpFile

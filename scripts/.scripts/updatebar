@@ -1,0 +1,51 @@
+#!/bin/sh
+
+function audio()
+{
+	audio=$(amixer -c 1 sget Master | awk -F"[][]" '/dB/ { print $2 }')
+	[[ -z $audio ]] && audio=$(amixer -c 2 sget Master | awk -F"[][]" '/dB/ { print $2 }')
+	echo -n $audio
+}
+
+function getRam()
+{
+	free -m | awk -F ' ' 'FNR == 2{print $3}'
+}
+
+function currentTime()
+{
+	date +%T
+}
+
+function currentDate()
+{
+	date +%d/%m-%Y
+}
+
+function MPDCurrent()
+{
+	[ -z $(mpc current) ] && echo "None" || mpc current | sed "s/.mp3//"
+}
+
+function MPDVolume()
+{
+	mpc volume | sed "s/volume: //"
+}
+
+function week()
+{
+	week=$(date +%W)
+	((week++)) # DATE(1) %W returns a number 00 to 53 but my country counts from 01 to 54
+	echo -n $week
+}
+
+xsetroot -name "\
+   Music: $(MPDCurrent)\
+ | MPD: $(MPDVolume)\
+ | RAM: $(getRam) mb\
+ | $(grabipv4)\
+ | $(currentTime)\
+ | $(currentDate)\
+ | $(week)\
+ | $(audio)\
+"

@@ -2,8 +2,9 @@ auto-reload yes
 refresh-on-startup yes
 
 browser "firefox"
+bind-key f macro-prefix
 macro j set browser "mpv --geometry=1400 --keep-open %u &" ; open-in-browser ; set browser "firefox"
-macro m set browser "~/.scripts/mpv %u &" ; goto-url 4 ; set browser "firefox"
+macro d set browser "~/.scripts/mpv %u &" ; goto-url 4 ; set browser "firefox"
 macro l set browser "rtv %u" ; open-in-browser ; set browser "firefox"
 macro o set browser "firefox %u" ; open-in-browser ; set browser "firefox"
 
@@ -19,6 +20,7 @@ bind-key j down
 bind-key k up
 bind-key l open
 bind-key h quit
+bind-key a quit
 
 # proxy
 proxy-type socks5h

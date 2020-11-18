@@ -1,0 +1,12 @@
+#!/bin/bash
+[[ -n $1 ]] && cd $1
+tmpFile="/tmp/"$(head /dev/random | tr -dc A-Za-z0-9 | head -c 13 ; echo '')
+touch $tmpFile
+for filename in *; do echo "$filename"; done > $tmpFile
+vim $tmpFile
+i=1
+for filename in *; do
+	newFileName=$(sed "${i}q;d" $tmpFile)
+	[[ $filename != $newFileName ]] && mv "$filename" "$newFileName" &> /dev/null; i=$((i+1))
+done
+rm $tmpFile
