@@ -1,4 +1,5 @@
 # CLEAN $HOME
+eval $(keychain --eval $HOME/.ssh/antonkling)
 PATH="$PATH:$HOME/.local/bin"
 export XDG_DATA_HOME=$HOME"/.local/share"
 export XDG_CONFIG_HOME=$HOME"/.config"
