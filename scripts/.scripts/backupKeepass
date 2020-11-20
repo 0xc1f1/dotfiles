@@ -1,0 +1,2 @@
+#!/bin/sh
+scp $HOME/Media/Syncthing/backup/MainDatabase.kdbx alpine:/www/PD
