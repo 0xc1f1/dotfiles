@@ -37,7 +37,7 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+//	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 };
@@ -83,11 +83,11 @@ static const char *aacmd[]  = { "/home/anton/.scripts/keys/swede-aa", NULL };*/
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 
- /* Swedish chars */	
+ /* Swedish chars */
 /*	{ MODKEY,                       XK_semicolon,      spawn,          {.v = ocmd } },
 	{ MODKEY,                       XK_quotedbl,      spawn,          {.v = acmd } },
 	{ MODKEY,                       XK_bracketleft,      spawn,          {.v = aacmd } },*/
- /* END Swedish chars */	
+ /* END Swedish chars */
 
 	{ MODKEY,						XK_a,	   spawn,          SHCMD("setxkbmap -query | grep 'layout:     us' && setxkbmap se || setxkbmap us") },
 	{ MODKEY,                       XK_n,      spawn,          {.v = browsercmd } },

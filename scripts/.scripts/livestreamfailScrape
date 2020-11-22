@@ -13,7 +13,7 @@ ydl_opts = {
 redditPosts = feedparser.parse("https://reddit.com/r/livestreamfail/.rss")
 
 currentTime = time.time()
-directoryFiles = os.listdir("/home/anton/Media/Videos/livestreamfails/")
+directoryFiles = os.listdir("/home/anton/videos/livestreamfails/")
 
 for i in range(0,24):
     entry = redditPosts.entries[i]
@@ -30,7 +30,7 @@ for i in range(0,24):
             if not isIn:
                 try:
                     ydl_opts = {
-                        'outtmpl': "/home/anton/Media/Videos/livestreamfails/"+a['href'].replace("/","-"),
+                        'outtmpl': "/home/anton/videos/livestreamfails/"+a['href'].replace("/","-"),
                     }
                     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                         ydl.download([a['href']])

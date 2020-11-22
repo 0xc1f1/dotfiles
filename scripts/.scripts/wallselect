@@ -1,2 +1,2 @@
 #!/bin/bash
-xwallpaper --stretch $HOME"/Media/Images/Wallpapers/"$(ls -1 $HOME/Media/Images/Wallpapers | dmenu -l 15)
+xwallpaper --stretch $HOME"/images/wallpapers/"$(ls -1 $HOME/images/wallpapers | dmenu -l 15)
