@@ -1,10 +1,11 @@
 auto-reload yes
-refresh-on-startup yes
+reload-time 1
+reload-threads 100
 
 browser "firefox"
 bind-key f macro-prefix
-macro j set browser "mpv --geometry=1400 --keep-open %u &" ; open-in-browser ; set browser "firefox"
-macro d set browser "~/.scripts/mpv %u &" ; goto-url 4 ; set browser "firefox"
+macro j set browser "mpv-script %u &" ; open-in-browser ; set browser "firefox"
+macro d set browser "mpv-script %u &" ; goto-url 4 ; set browser "firefox"
 macro l set browser "rtv %u" ; open-in-browser ; set browser "firefox"
 macro o set browser "firefox %u" ; open-in-browser ; set browser "firefox"
 

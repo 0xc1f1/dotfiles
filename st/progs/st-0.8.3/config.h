@@ -6,8 +6,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=15:antialias=true:autohint=true";
-//static char *font = "Fira Code:pixelsize=12:antialias=true:autohint=true";
+//static char *font = "Liberation Mono:pixelsize=15:antialias=true:autohint=true";
+static char *font = "Fira Code:pixelsize=12:antialias=true:autohint=true";
 static int borderpx = 0;
 
 /*
@@ -172,6 +172,8 @@ static Shortcut shortcuts[] = {
 
 	{ MODKEY|ShiftMask,     XK_C,           clipcopy,       {.i =  0} },
 	{ MODKEY|ShiftMask,     XK_V,           selpaste,		{.i =  0} },
+	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 
 
 

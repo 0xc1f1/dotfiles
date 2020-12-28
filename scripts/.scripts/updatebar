@@ -34,18 +34,29 @@ function MPDVolume()
 
 function week()
 {
-	week=$(date +%W)
-	((week++)) # DATE(1) %W returns a number 00 to 53 but my country counts from 01 to 54
+	week=$(date +%V)
 	echo -n $week
 }
 
+function is_internet_down()
+{
+	cat /sys/class/net/enp5s0/operstate
+}
+
+function check_mail()
+{
+	ls ~/.config/neomutt/mailbox/School/inbox/new | wc -l
+}
+
+function get_rss()
+{
+	newsboat -x print-unread > /dev/null && (newsboat -x print-unread | awk -F ' ' '{print $1}') || echo "?"
+}
+
 xsetroot -name "\
-   Music: $(MPDCurrent)\
- | MPD: $(MPDVolume)\
- | RAM: $(getRam) mb\
- | $(grabipv4)\
- | $(currentTime)\
- | $(currentDate)\
- | $(week)\
- | $(audio)\
+   Mail: $(check_mail)\
+ | Music: $(MPDCurrent) $(MPDVolume)\
+ | $(currentTime) $(currentDate) $(week)\
+ | Volume: $(audio)\
+ | $(is_internet_down)
 "

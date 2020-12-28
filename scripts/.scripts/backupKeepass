@@ -1,2 +1,3 @@
 #!/bin/sh
-scp $HOME/Media/Syncthing/backup/MainDatabase.kdbx alpine:/www/PD
+scp $HOME/keys/database.kdbx alpine:/www/PD
+scp $HOME/keys/database.kdbx phone:/sdcard/Documents/pcsync.kdbx

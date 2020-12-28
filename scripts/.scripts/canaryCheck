@@ -4,14 +4,13 @@ whonixFingerprint="6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48" # MAKE SURE THAT TH
 wget -O /tmp/whonix-canary.txt https://raw.githubusercontent.com/Whonix/canary/master/canary.txt &> /dev/null || $(echo "[ERROR] Download of canary.txt FAILED."; exit 1)
 wget -O /tmp/whonix-canary.txt.asc https://raw.githubusercontent.com/Whonix/canary/master/canary.txt.asc &> /dev/null || $(echo "[ERROR] Download of canary.txt.asc FAILED."; exit 1)
 
-fingerprint=$(gpg --verify /tmp/whonix-canary.txt.asc /tmp/whonix-canary.txt 2>&1 | sed "/key/ !d;s/.*key //")
-[ $fingerprint == $whonixFingerprint ]\
-&&\
-gpg --verify /tmp/whonix-canary.txt.asc /tmp/whonix-canary.txt &> /dev/null &&\
+gpg --verify /tmp/whonix-canary.txt.asc /tmp/whonix-canary.txt &&\
 less /tmp/whonix-canary.txt &&\
-echo "[OK] The Whonix canary is correctly signed by the correct key. ($fingerprint)"\
-|| $(echo "[WARNING] The Whonix canary does not appear to be correctly signed. Make sure that you have imported the correct key. For now do not trust anything written in the canary as being written by the Whonix lead developer." && exit 1)
-grep "2. No warrants have ever been served on the Whonix Project; for example, to hand out the private signing keys or to introduce backdoors." /tmp/whonix-canary.txt >> /dev/null || $(echo "[WARNING] The Whonix canary is does not mention \"No warrants have ever been served on the Whonix Project;\". The canary file can be read at /tmp/whonix-canary.txt" && exit 1)
+echo "[OK] The Whonix canary is correctly signed"\
+|| echo "[WARNING] The Whonix canary does not appear to be correctly signed. Make sure that you have imported the correct key. For now do not trust anything written in the canary as being written by the Whonix lead developer."&& exit 1
+
+warrantString="2. No warrants have ever been served on the Whonix Project; for example, to hand out the private signing keys or to introduce backdoors."
+grep -Fxq $warrantString /tmp/whonix-canary.txt || $(echo "[WARNING] The Whonix canary is does not mention \"No warrants have ever been served on the Whonix Project;\". The canary file can be read at /tmp/whonix-canary.txt" && exit 1)
 
 #OPTIONAL: Remove all the files after verifying them
 # yes | rm /tmp/whonix-canary.txt* &> /dev/null

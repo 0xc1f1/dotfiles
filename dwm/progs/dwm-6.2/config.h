@@ -7,8 +7,8 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = {	"fira code:size=8" };
-static const char dmenufont[]       = "fira code:size=9";
+static const char *fonts[]          = {	"Hack:pixelsize=11:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Hack:pixelsize=11:antialias=true:autohint=true";
 static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#fc0000";
 static const char col_gray3[]       = "#ffffff";
@@ -57,12 +57,12 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,             KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ Mod1Mask,             KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY|Mod1Mask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+	{ Mod1Mask|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY|Mod1Mask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -71,14 +71,12 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *newsboatcmd[]  = { "st", "newsboat", NULL };
+static const char *emailcmd[]  = { "st", "neomutt", NULL };
 static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL };
-static const char *browsercmd[] = { "firefox", NULL };
-static const char *torbrowsercmd[] = { "/home/anton/apps/tor-browser_en-US/Browser/start-tor-browser", "--detach", NULL };
+static const char *browsercmd[] = { "/home/anton/.scripts/startFirefox", NULL };
+static const char *torbrowsercmd[] = { "torbrowser-launcher", NULL };
 
- /* Swedish chars */
- /*  static const char *ocmd[]  = { "/home/anton/.scripts/keys/swede-o", NULL };
-static const char *acmd[]  = { "/home/anton/.scripts/keys/swede-a", NULL };
-static const char *aacmd[]  = { "/home/anton/.scripts/keys/swede-aa", NULL };*/
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -89,32 +87,33 @@ static Key keys[] = {
 	{ MODKEY,                       XK_bracketleft,      spawn,          {.v = aacmd } },*/
  /* END Swedish chars */
 
-	{ MODKEY,						XK_a,	   spawn,          SHCMD("setxkbmap -query | grep 'layout:     us' && setxkbmap se || setxkbmap us") },
-	{ MODKEY,                       XK_n,      spawn,          {.v = browsercmd } },
-	{ MODKEY|ShiftMask,             XK_n,      spawn,          {.v = torbrowsercmd } },
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,						XK_w,	   spawn,			{.v = wallselectcmd} },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,						XK_F2,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-) && ~/.scripts/updatebar") },
-	{ MODKEY,						XK_F3,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+) && ~/.scripts/updatebar") },
-	{ MODKEY,						XK_F1,	   spawn,          SHCMD("mpc toggle && ~/.scripts/updatebar") },
-	{ MODKEY,						XK_F6,	   spawn,          SHCMD("mpc prev && ~/.scripts/updatebar") },
-	{ MODKEY,						XK_F7,	   spawn,          SHCMD("mpc toggle && ~/.scripts/updatebar") },
-	{ MODKEY,						XK_F8,	   spawn,          SHCMD("mpc next && ~/.scripts/updatebar") },
-	{ MODKEY|ShiftMask,				XK_F2,	   spawn,          SHCMD("mpc volume -5 && ~/.scripts/updatebar") },
-	{ MODKEY|ShiftMask,				XK_F3,	   spawn,          SHCMD("mpc volume +5 && ~/.scripts/updatebar") },
-	{ MODKEY,						XK_F10,	   spawn,          SHCMD("sudo xkill") },
-	{ MODKEY,						XK_F11,	   spawn,          SHCMD("sleep 0.2;/home/anton/.scripts/screenshot") },
+	{ Mod1Mask,						XK_a,	   spawn,          SHCMD("setxkbmap -query | grep 'layout:     us' && setxkbmap se || setxkbmap us") },
+	{ Mod1Mask,                     XK_u,      spawn,          {.v = browsercmd } },
+	{ Mod1Mask|ShiftMask,           XK_u,      spawn,          {.v = torbrowsercmd } },
+	{ Mod1Mask,                     XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,						XK_w,	   spawn,		   {.v = wallselectcmd} },
+	{ Mod1Mask,                     XK_n,      spawn,          {.v = termcmd } },
+	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
+	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
+
+	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-) && ~/.scripts/updatebar") },
+	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+) && ~/.scripts/updatebar") },
+	{ Mod1Mask, 					XK_m,	   spawn,          SHCMD("mpc toggle && ~/.scripts/updatebar") },
+	{ Mod1Mask|ShiftMask,			XK_z,	   spawn,          SHCMD("mpc volume -5 && ~/.scripts/updatebar") },
+	{ Mod1Mask|ShiftMask,			XK_x,	   spawn,          SHCMD("mpc volume +5 && ~/.scripts/updatebar") },
+	{ Mod1Mask|ShiftMask,			XK_p,	   spawn,          SHCMD("sudo xkill") },
+	{ Mod1Mask,						XK_s,	   spawn,          SHCMD("sleep 0.2;/home/anton/.scripts/screenshot") },
+
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
+	{ Mod1Mask,                     XK_j,      focusstack,     {.i = +1 } },
+	{ Mod1Mask,                     XK_k,      focusstack,     {.i = -1 } },
+	{ Mod1Mask,                     XK_i,      incnmaster,     {.i = +1 } },
+	{ Mod1Mask,                     XK_b,      incnmaster,     {.i = -1 } },
+	{ Mod1Mask,                     XK_h,      setmfact,       {.f = -0.05} },
+	{ Mod1Mask,                     XK_l,      setmfact,       {.f = +0.05} },
+	{ Mod1Mask,                     XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
+	{ Mod1Mask,						XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -132,10 +131,10 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = "0x 0y -25w 0h" } },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ Mod1Mask,                     XK_comma,  focusmon,       {.i = -1 } },
+	{ Mod1Mask,                     XK_period, focusmon,       {.i = +1 } },
+	{ Mod1Mask|ShiftMask,           XK_comma,  tagmon,         {.i = -1 } },
+	{ Mod1Mask|ShiftMask,           XK_period, tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

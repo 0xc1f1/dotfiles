@@ -1,5 +1,6 @@
 #!/bin/sh
 mpd -v --no-daemon --stdout &
-picom -b
+#picom -b
 newsboat -x reload &
+xdg-mime default org.pwmt.zathura.desktop application/pdf
 python ~/Projects/livestreamFails/getNew.py &

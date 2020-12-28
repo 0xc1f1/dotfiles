@@ -1,0 +1,2 @@
+#!/bin/sh
+fc-list | awk -F : '{print substr($2,2);}' | dmenu -i | xclip -selection XA_PRIMARY

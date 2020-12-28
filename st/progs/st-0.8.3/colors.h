@@ -17,7 +17,7 @@
 [15]=      "#f9f9f9",
 };*/
 static const char *colorname[] = {
-	"#141414",  /*  0: black    */
+	"#000000",  /*  0: black    */
 	"#c0392b",  /*  1: red      */
 	"#27ae60",  /*  2: green    */
 	"#f39c12",  /*  3: yellow   */

@@ -1,7 +1,0 @@
-#!/bin/sh
-MPV_FLAGS="--geometry=1400 --keep-open"
-if test -f "~/videos/livestreamfails/$(echo $1 | tr / - )"; then
-	mpv $MPV_FLAGS ~/videos/livestreamfails/$(echo $1 | tr / - ) &> /dev/null
-else
-	mpv $MPV_FLAGS $1
-fi

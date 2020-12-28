@@ -15,8 +15,7 @@ redditPosts = feedparser.parse("https://reddit.com/r/livestreamfail/.rss")
 currentTime = time.time()
 directoryFiles = os.listdir("/home/anton/videos/livestreamfails/")
 
-for i in range(0,24):
-    entry = redditPosts.entries[i]
+for entry in redditPosts.entries:
 
     isIn = False
 

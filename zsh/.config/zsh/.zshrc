@@ -1,5 +1,15 @@
+f() {
+    fff "$@"
+    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
+}
+
 # CLEAN $HOME
-eval $(keychain --eval $HOME/.ssh/antonkling) && clear
+if ! pgrep -x ssh-agent > /dev/null
+then
+	eval $(keychain --eval $HOME/.ssh/antonkling) && clear
+fi
+
+
 PATH="$PATH:$HOME/.local/bin"
 export XDG_DATA_HOME=$HOME"/.local/share"
 export XDG_CONFIG_HOME=$HOME"/.config"
@@ -28,21 +38,21 @@ export BROWSER="/usr/bin/urlportal.sh"
 # Enable colors and change prompt:
 autoload -U colors && colors
 #PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
-PS1="%F{cyan}%~ %f> "
+PS1="%F{red}%~ %f> "
 alias fd='nvim'
 alias jk='cd'
-alias ls='ls --color'
+alias cl='clear'
+alias ls='ls --color -F'
 alias la='ls -A'
-alias install='sudo pacman -Sy --noconfirm'
-alias search='sudo pacman -Sys'
+alias install='sudo pacman -S'
+alias search='sudo pacman -Ss'
 alias upgrade='sudo pacman -Syu --noconfirm'
 alias remove='sudo pacman -R'
 alias xclip='xclip -selection c'
 alias ytmp3='youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s"'
 alias ytdl='youtube-dl -o "%(title)s.%(ext)s"'
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
-alias gfjk='grep --color=auto'
-alias ejk='exit'
+alias grep='grep --color=auto'
 
 # Basically just Luke Smiths zsh config
 
