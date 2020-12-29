@@ -14,7 +14,6 @@
 #include <X11/keysym.h>
 #include <X11/Xft/Xft.h>
 #include <X11/XKBlib.h>
-#include <X11/Xresource.h>
 
 char *argv0;
 #include "arg.h"
@@ -35,7 +34,6 @@ typedef struct {
 	void (*func)(const Arg *);
 	const Arg arg;
 	uint  release;
-	int  altscrn;  /* 0: don't care, -1: not alt screen, 1: alt screen */
 } MouseShortcut;
 
 typedef struct {
@@ -46,19 +44,6 @@ typedef struct {
 	signed char appkey;    /* application keypad */
 	signed char appcursor; /* application cursor */
 } Key;
-
-/* Xresources preferences */
-enum resource_type {
-	STRING = 0,
-	INTEGER = 1,
-	FLOAT = 2
-};
-
-typedef struct {
-	char *name;
-	enum resource_type type;
-	void *dst;
-} ResourcePref;
 
 /* X modifiers */
 #define XK_ANY_MOD    UINT_MAX
@@ -120,7 +105,6 @@ typedef struct {
 	XSetWindowAttributes attrs;
 	int scr;
 	int isfixed; /* is fixed geometry? */
-	int depth; /* bit depth */
 	int l, t; /* left and top offset */
 	int gm; /* geometry mask */
 } XWindow;
@@ -259,7 +243,6 @@ static char *usedfont = NULL;
 static double usedfontsize = 0;
 static double defaultfontsize = 0;
 
-static char *opt_alpha = NULL;
 static char *opt_class = NULL;
 static char **opt_cmd  = NULL;
 static char *opt_embed = NULL;
@@ -463,7 +446,6 @@ mouseaction(XEvent *e, uint release)
 	for (ms = mshortcuts; ms < mshortcuts + LEN(mshortcuts); ms++) {
 		if (ms->release == release &&
 		    ms->button == e->xbutton.button &&
-		    (!ms->altscrn || (ms->altscrn == (tisaltscr() ? 1 : -1))) &&
 		    (match(ms->mod, state) ||  /* exact or forced */
 		     match(ms->mod, state & ~forcemousemod))) {
 			ms->func(&(ms->arg));
@@ -691,7 +673,6 @@ setsel(char *str, Time t)
 	XSetSelectionOwner(xw.dpy, XA_PRIMARY, xw.win, t);
 	if (XGetSelectionOwner(xw.dpy, XA_PRIMARY) != xw.win)
 		selclear();
-        clipcopy(NULL);
 }
 
 void
@@ -753,7 +734,7 @@ xresize(int col, int row)
 
 	XFreePixmap(xw.dpy, xw.buf);
 	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
-			xw.depth);
+			DefaultDepth(xw.dpy, xw.scr));
 	XftDrawChange(xw.draw, xw.buf);
 	xclear(0, 0, win.w, win.h);
 
@@ -813,13 +794,6 @@ xloadcols(void)
 			else
 				die("could not allocate color %d\n", i);
 		}
-
-	/* set alpha value of bg color */
-	if (opt_alpha)
-		alpha = strtof(opt_alpha, NULL);
-	dc.col[defaultbg].color.alpha = (unsigned short)(0xffff * alpha);
-	dc.col[defaultbg].pixel &= 0x00FFFFFF;
-	dc.col[defaultbg].pixel |= (unsigned char)(0xff * alpha) << 24;
 	loaded = 1;
 }
 
@@ -854,8 +828,8 @@ xclear(int x1, int y1, int x2, int y2)
 void
 xhints(void)
 {
-	XClassHint class = {opt_name ? opt_name : "st",
-	                    opt_class ? opt_class : "St"};
+	XClassHint class = {opt_name ? opt_name : termname,
+	                    opt_class ? opt_class : termname};
 	XWMHints wm = {.flags = InputHint, .input = 1};
 	XSizeHints *sizeh;
 
@@ -1129,21 +1103,11 @@ xinit(int cols, int rows)
 	Window parent;
 	pid_t thispid = getpid();
 	XColor xmousefg, xmousebg;
-	XWindowAttributes attr;
-	XVisualInfo vis;
 
+	if (!(xw.dpy = XOpenDisplay(NULL)))
+		die("can't open display\n");
 	xw.scr = XDefaultScreen(xw.dpy);
-
-	if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0)))) {
-		parent = XRootWindow(xw.dpy, xw.scr);
-		xw.depth = 32;
-	} else {
-		XGetWindowAttributes(xw.dpy, parent, &attr);
-		xw.depth = attr.depth;
-	}
-
-	XMatchVisualInfo(xw.dpy, xw.scr, xw.depth, TrueColor, &vis);
-	xw.vis = vis.visual;
+	xw.vis = XDefaultVisual(xw.dpy, xw.scr);
 
 	/* font */
 	if (!FcInit())
@@ -1153,7 +1117,7 @@ xinit(int cols, int rows)
 	xloadfonts(usedfont, 0);
 
 	/* colors */
-	xw.cmap = XCreateColormap(xw.dpy, parent, xw.vis, None);
+	xw.cmap = XDefaultColormap(xw.dpy, xw.scr);
 	xloadcols();
 
 	/* adjust fixed window geometry */
@@ -1173,15 +1137,19 @@ xinit(int cols, int rows)
 		| ButtonMotionMask | ButtonPressMask | ButtonReleaseMask;
 	xw.attrs.colormap = xw.cmap;
 
+	if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0))))
+		parent = XRootWindow(xw.dpy, xw.scr);
 	xw.win = XCreateWindow(xw.dpy, parent, xw.l, xw.t,
-			win.w, win.h, 0, xw.depth, InputOutput,
+			win.w, win.h, 0, XDefaultDepth(xw.dpy, xw.scr), InputOutput,
 			xw.vis, CWBackPixel | CWBorderPixel | CWBitGravity
 			| CWEventMask | CWColormap, &xw.attrs);
 
 	memset(&gcvalues, 0, sizeof(gcvalues));
 	gcvalues.graphics_exposures = False;
-	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h, xw.depth);
-	dc.gc = XCreateGC(xw.dpy, xw.buf, GCGraphicsExposures, &gcvalues);
+	dc.gc = XCreateGC(xw.dpy, parent, GCGraphicsExposures,
+			&gcvalues);
+	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
+			DefaultDepth(xw.dpy, xw.scr));
 	XSetForeground(xw.dpy, dc.gc, dc.col[defaultbg].pixel);
 	XFillRectangle(xw.dpy, xw.buf, dc.gc, 0, 0, win.w, win.h);
 
@@ -1558,8 +1526,9 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 	/* draw the new one */
 	if (IS_SET(MODE_FOCUSED)) {
 		switch (win.cursor) {
-		case 7: /* st extension: snowman (U+2603) */
-			g.u = 0x2603;
+		case 7: /* st extension */
+			g.u = 0x2603; /* snowman (U+2603) */
+			/* FALLTHROUGH */
 		case 0: /* Blinking Block */
 		case 1: /* Blinking Block (Default) */
 		case 2: /* Steady Block */
@@ -1723,8 +1692,7 @@ xsetmode(int set, unsigned int flags)
 int
 xsetcursor(int cursor)
 {
-	DEFAULT(cursor, 1);
-	if (!BETWEEN(cursor, 0, 6))
+	if (!BETWEEN(cursor, 0, 7)) /* 7: st extension */
 		return 1;
 	win.cursor = cursor;
 	return 0;
@@ -1901,10 +1869,9 @@ run(void)
 	XEvent ev;
 	int w = win.w, h = win.h;
 	fd_set rfd;
-	int xfd = XConnectionNumber(xw.dpy), xev, blinkset = 0, dodraw = 0;
-	int ttyfd;
-	struct timespec drawtimeout, *tv = NULL, now, last, lastblink;
-	long deltatime;
+	int xfd = XConnectionNumber(xw.dpy), ttyfd, xev, drawing;
+	struct timespec seltv, *tv, now, lastblink, trigger;
+	double timeout;
 
 	/* Waiting for window mapping */
 	do {
@@ -1925,119 +1892,78 @@ run(void)
 	ttyfd = ttynew(opt_line, shell, opt_io, opt_cmd);
 	cresize(w, h);
 
-	clock_gettime(CLOCK_MONOTONIC, &last);
-	lastblink = last;
-
-	for (xev = actionfps;;) {
+	for (timeout = -1, drawing = 0, lastblink = (struct timespec){0};;) {
 		FD_ZERO(&rfd);
 		FD_SET(ttyfd, &rfd);
 		FD_SET(xfd, &rfd);
+
+		if (XPending(xw.dpy))
+			timeout = 0;  /* existing events might not set xfd */
+
+		seltv.tv_sec = timeout / 1E3;
+		seltv.tv_nsec = 1E6 * (timeout - 1E3 * seltv.tv_sec);
+		tv = timeout >= 0 ? &seltv : NULL;
 
 		if (pselect(MAX(xfd, ttyfd)+1, &rfd, NULL, NULL, tv, NULL) < 0) {
 			if (errno == EINTR)
 				continue;
 			die("select failed: %s\n", strerror(errno));
 		}
-		if (FD_ISSET(ttyfd, &rfd)) {
-			ttyread();
-			if (blinktimeout) {
-				blinkset = tattrset(ATTR_BLINK);
-				if (!blinkset)
-					MODBIT(win.mode, 0, MODE_BLINK);
-			}
-		}
-
-		if (FD_ISSET(xfd, &rfd))
-			xev = actionfps;
-
 		clock_gettime(CLOCK_MONOTONIC, &now);
-		drawtimeout.tv_sec = 0;
-		drawtimeout.tv_nsec =  (1000 * 1E6)/ xfps;
-		tv = &drawtimeout;
 
-		dodraw = 0;
-		if (blinktimeout && TIMEDIFF(now, lastblink) > blinktimeout) {
-			tsetdirtattr(ATTR_BLINK);
-			win.mode ^= MODE_BLINK;
-			lastblink = now;
-			dodraw = 1;
-		}
-		deltatime = TIMEDIFF(now, last);
-		if (deltatime > 1000 / (xev ? xfps : actionfps)) {
-			dodraw = 1;
-			last = now;
+		if (FD_ISSET(ttyfd, &rfd))
+			ttyread();
+
+		xev = 0;
+		while (XPending(xw.dpy)) {
+			xev = 1;
+			XNextEvent(xw.dpy, &ev);
+			if (XFilterEvent(&ev, None))
+				continue;
+			if (handler[ev.type])
+				(handler[ev.type])(&ev);
 		}
 
-		if (dodraw) {
-			while (XPending(xw.dpy)) {
-				XNextEvent(xw.dpy, &ev);
-				if (XFilterEvent(&ev, None))
-					continue;
-				if (handler[ev.type])
-					(handler[ev.type])(&ev);
+		/*
+		 * To reduce flicker and tearing, when new content or event
+		 * triggers drawing, we first wait a bit to ensure we got
+		 * everything, and if nothing new arrives - we draw.
+		 * We start with trying to wait minlatency ms. If more content
+		 * arrives sooner, we retry with shorter and shorter periods,
+		 * and eventually draw even without idle after maxlatency ms.
+		 * Typically this results in low latency while interacting,
+		 * maximum latency intervals during `cat huge.txt`, and perfect
+		 * sync with periodic updates from animations/key-repeats/etc.
+		 */
+		if (FD_ISSET(ttyfd, &rfd) || xev) {
+			if (!drawing) {
+				trigger = now;
+				drawing = 1;
 			}
+			timeout = (maxlatency - TIMEDIFF(now, trigger)) \
+			          / maxlatency * minlatency;
+			if (timeout > 0)
+				continue;  /* we have time, try to find idle */
+		}
 
-			draw();
-			XFlush(xw.dpy);
-
-			if (xev && !FD_ISSET(xfd, &rfd))
-				xev--;
-			if (!FD_ISSET(ttyfd, &rfd) && !FD_ISSET(xfd, &rfd)) {
-				if (blinkset) {
-					if (TIMEDIFF(now, lastblink) \
-							> blinktimeout) {
-						drawtimeout.tv_nsec = 1000;
-					} else {
-						drawtimeout.tv_nsec = (1E6 * \
-							(blinktimeout - \
-							TIMEDIFF(now,
-								lastblink)));
-					}
-					drawtimeout.tv_sec = \
-					    drawtimeout.tv_nsec / 1E9;
-					drawtimeout.tv_nsec %= (long)1E9;
-				} else {
-					tv = NULL;
-				}
+		/* idle detected or maxlatency exhausted -> draw */
+		timeout = -1;
+		if (blinktimeout && tattrset(ATTR_BLINK)) {
+			timeout = blinktimeout - TIMEDIFF(now, lastblink);
+			if (timeout <= 0) {
+				if (-timeout > blinktimeout) /* start visible */
+					win.mode |= MODE_BLINK;
+				win.mode ^= MODE_BLINK;
+				tsetdirtattr(ATTR_BLINK);
+				lastblink = now;
+				timeout = blinktimeout;
 			}
 		}
+
+		draw();
+		XFlush(xw.dpy);
+		drawing = 0;
 	}
-}
-
-int
-resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
-{
-	char **sdst = dst;
-	int *idst = dst;
-	float *fdst = dst;
-
-	char fullname[256];
-	char fullclass[256];
-	char *type;
-	XrmValue ret;
-
-	snprintf(fullname, sizeof(fullname), "%s.%s",
-			opt_name ? opt_name : "st", name);
-	snprintf(fullclass, sizeof(fullclass), "%s.%s",
-			opt_class ? opt_class : "St", name);
-	fullname[sizeof(fullname) - 1] = fullclass[sizeof(fullclass) - 1] = '\0';
-
-	XrmGetResource(db, fullname, fullclass, &type, &ret);
-	if (ret.addr == NULL || strncmp("String", type, 64))
-		return 1;
-
-	switch (rtype) {
-	case STRING:
-		*sdst = ret.addr;
-		break;
-	case INTEGER:
-		*idst = strtoul(ret.addr, NULL, 10);
-		break;
-	case FLOAT:
-		*fdst = strtof(ret.addr, NULL);
-		break;
-	}
-	return 0;
 }
 
 void
@@ -2058,14 +1984,11 @@ main(int argc, char *argv[])
 {
 	xw.l = xw.t = 0;
 	xw.isfixed = False;
-	win.cursor = cursorshape;
+	xsetcursor(cursorshape);
 
 	ARGBEGIN {
 	case 'a':
 		allowaltscreen = 0;
-		break;
-	case 'A':
-		opt_alpha = EARGF(usage());
 		break;
 	case 'c':
 		opt_class = EARGF(usage());
@@ -2116,10 +2039,6 @@ run:
 
 	setlocale(LC_CTYPE, "");
 	XSetLocaleModifiers("");
-
-	if(!(xw.dpy = XOpenDisplay(NULL)))
-		die("Can't open display\n");
-
 	cols = MAX(cols, 1);
 	rows = MAX(rows, 1);
 	tnew(cols, rows);
