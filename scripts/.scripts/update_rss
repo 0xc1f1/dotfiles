@@ -1,0 +1,2 @@
+#!/bin/bash
+newsboat -x reload;pkill -RTMIN+8 dwmblocks

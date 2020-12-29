@@ -96,11 +96,11 @@ static Key keys[] = {
 	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
 	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
 
-	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-) && ~/.scripts/updatebar") },
-	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+) && ~/.scripts/updatebar") },
-	{ Mod1Mask, 					XK_m,	   spawn,          SHCMD("mpc toggle && ~/.scripts/updatebar") },
-	{ Mod1Mask|ShiftMask,			XK_z,	   spawn,          SHCMD("mpc volume -5 && ~/.scripts/updatebar") },
-	{ Mod1Mask|ShiftMask,			XK_x,	   spawn,          SHCMD("mpc volume +5 && ~/.scripts/updatebar") },
+	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-); pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+); pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask, 					XK_m,	   spawn,          SHCMD("mpc toggle; pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask|ShiftMask,			XK_z,	   spawn,          SHCMD("mpc volume -5; pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask|ShiftMask,			XK_x,	   spawn,          SHCMD("mpc volume +5; pkill -RTMIN+10 dwmblocks") },
 	{ Mod1Mask|ShiftMask,			XK_p,	   spawn,          SHCMD("sudo xkill") },
 	{ Mod1Mask,						XK_s,	   spawn,          SHCMD("sleep 0.2;/home/anton/.scripts/screenshot") },
 

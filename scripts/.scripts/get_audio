@@ -1,0 +1,4 @@
+#!/bin/bash
+audio=$(amixer -c 1 sget Master | awk -F"[][]" '/dB/ { print $2 }')
+[[ -z $audio ]] && audio=$(amixer -c 2 sget Master | awk -F"[][]" '/dB/ { print $2 }')
+echo -n $audio

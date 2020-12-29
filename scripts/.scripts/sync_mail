@@ -1,0 +1,1 @@
+/usr/bin/mbsync -a -q;pkill -RTMIN+11 dwmblocks
