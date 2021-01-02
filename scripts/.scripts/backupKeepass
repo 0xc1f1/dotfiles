@@ -1,3 +1,2 @@
 #!/bin/sh
-scp $HOME/keys/database.kdbx alpine:/www/PD
-scp $HOME/keys/database.kdbx phone:/sdcard/Documents/pcsync.kdbx
+scp $HOME/keepass/database.kdbx phone:/sdcard/Documents/pcsync.kdbx
