@@ -4,7 +4,7 @@ Xresources=$HOME"/.Xresources"
 
 [ -n "$1" ] && Xresources=$1
 
-ST_FOLDER=$HOME"/dotfiles/st-0.8.3"
+ST_FOLDER=$HOME"/dotfiles/st-0.8.4"
 echo "static const char *colorname[] = {" > $ST_FOLDER"/colors.h"
 sed "s/\!.*//g; /^$/ d;/color/!d;s/*.color//g;s/^/[/g;s/:/]=/g;s/#/\"#/g;s/$/\",/g" $Xresources >> $ST_FOLDER"/colors.h"
 echo "};" >> $ST_FOLDER"/colors.h"

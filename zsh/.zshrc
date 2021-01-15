@@ -3,6 +3,12 @@ f() {
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
 
+export GOPATH=$HOME/golib
+export PATH=$PATH:GOPATH/bin
+export GOPATH=$GOPATH:$HOME/go
+
+export RTV_BROWSER=$HOME"/.scripts/urlportal.sh"
+
 # CLEAN $HOME
 if ! pgrep -x ssh-agent > /dev/null
 then
@@ -46,13 +52,14 @@ alias ls='ls --color -F'
 alias la='ls -A'
 alias install='sudo pacman -S'
 alias search='sudo pacman -Ss'
-alias upgrade='sudo pacman -Syu --noconfirm'
+alias upgrade='sudo pacman -Su --noconfirm'
 alias remove='sudo pacman -R'
 alias xclip='xclip -selection c'
 alias ytmp3='youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s"'
 alias ytdl='youtube-dl -o "%(title)s.%(ext)s"'
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
 alias grep='grep --color=auto'
+alias torsocks='torsocks -i'
 
 # Basically just Luke Smiths zsh config
 

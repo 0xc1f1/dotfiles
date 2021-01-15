@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 8;        /* gaps between windows */
+static const unsigned int gappx     = 0;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -45,7 +45,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -73,16 +73,16 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 static const char *newsboatcmd[]  = { "st", "newsboat", NULL };
 static const char *emailcmd[]  = { "st", "neomutt", NULL };
+static const char *ncmpcppcmd[]  = { "st", "ncmpcpp", NULL };
 static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL };
 static const char *browsercmd[] = { "/home/anton/.scripts/startFirefox", NULL };
 static const char *torbrowsercmd[] = { "torbrowser-launcher", NULL };
-
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 
  /* Swedish chars */
-/*	{ MODKEY,                       XK_semicolon,      spawn,          {.v = ocmd } },
+ /* { MODKEY,                       XK_semicolon,      spawn,          {.v = ocmd } },
 	{ MODKEY,                       XK_quotedbl,      spawn,          {.v = acmd } },
 	{ MODKEY,                       XK_bracketleft,      spawn,          {.v = aacmd } },*/
  /* END Swedish chars */
@@ -95,6 +95,7 @@ static Key keys[] = {
 	{ Mod1Mask,                     XK_n,      spawn,          {.v = termcmd } },
 	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
 	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
+	{ Mod1Mask|ShiftMask,           XK_o,      spawn,          {.v = ncmpcppcmd } },
 
 	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-); pkill -RTMIN+10 dwmblocks") },
 	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+); pkill -RTMIN+10 dwmblocks") },

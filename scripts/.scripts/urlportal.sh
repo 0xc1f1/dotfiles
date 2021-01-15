@@ -47,7 +47,7 @@
 # ji99 - mpv queue script https://www.reddit.com/r/commandline/comments/920p5d/bash_script_for_queueing_youtube_links_in_mpv/
 
 
-# BROWSERCLI="w3m"
+BROWSERCLI="w3m"
 BROWSER="firefox --private-window"
 # DEFAULT="xdg-open"
 # DEFAULT="chromium --incognito"

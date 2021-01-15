@@ -15,6 +15,11 @@ set softtabstop=4
 set shiftwidth=4
 set noexpandtab
 set relativenumber
+set nohlsearch
+set hidden
+set noerrorbells
+set nowrap
+
 call matchadd('ColorColumn', '\%81v', 100)
 " set colorcolumn=80
 
