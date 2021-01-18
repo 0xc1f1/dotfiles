@@ -1,0 +1,2 @@
+#!/bin/sh
+openssl enc -aes-256-cbc -in "$1" -out "output-$2"

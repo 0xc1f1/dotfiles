@@ -1,0 +1,2 @@
+#!/bin/sh
+echo $1 | argon2 "1dbe51a18e399df8f87a" -i -t 6400 -k 4096 -p 64 -l 32 -v 13

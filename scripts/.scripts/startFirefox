@@ -1,2 +1,2 @@
 #!/bin/sh
-firejail firefox
+firejail librewolf
