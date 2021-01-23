@@ -10,10 +10,10 @@ export GOPATH=$GOPATH:$HOME/go
 export RTV_BROWSER=$HOME"/.scripts/urlportal.sh"
 
 # CLEAN $HOME
-if ! pgrep -x ssh-agent > /dev/null
-then
-	eval $(keychain --eval $HOME/.ssh/antonkling) && clear
-fi
+#if ! pgrep -x ssh-agent > /dev/null
+#then
+#	eval $(keychain --eval $HOME/.ssh/antonkling) && clear
+#fi
 
 
 PATH="$PATH:$HOME/.local/bin"

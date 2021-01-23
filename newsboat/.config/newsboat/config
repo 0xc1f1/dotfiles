@@ -2,12 +2,12 @@ auto-reload yes
 reload-time 1
 reload-threads 100
 
-browser "firefox"
+browser "brave"
 bind-key f macro-prefix
-macro j set browser "mpv-script %u &" ; open-in-browser ; set browser "firefox"
-macro d set browser "mpv-script %u &" ; goto-url 4 ; set browser "firefox"
-macro l set browser "rtv %u" ; open-in-browser ; set browser "firefox"
-macro o set browser "firefox %u" ; open-in-browser ; set browser "firefox"
+macro j set browser "mpv-script %u &" ; open-in-browser ; set browser "brave"
+macro d set browser "mpv-script %u &" ; goto-url 4 ; set browser "brave"
+macro l set browser "rtv %u" ; open-in-browser ; set browser "brave"
+macro o set browser "brave %u" ; open-in-browser ; set browser "brave"
 
 # unbind keys
 # unbind-key ENTER

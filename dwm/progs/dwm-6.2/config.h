@@ -75,7 +75,7 @@ static const char *newsboatcmd[]  = { "st", "newsboat", NULL };
 static const char *emailcmd[]  = { "st", "neomutt", NULL };
 static const char *ncmpcppcmd[]  = { "st", "ncmpcpp", NULL };
 static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL };
-static const char *browsercmd[] = { "/home/anton/.scripts/startFirefox", NULL };
+static const char *browsercmd[] = { "/home/anton/.scripts/start_browser", NULL };
 static const char *torbrowsercmd[] = { "torbrowser-launcher", NULL };
 
 static Key keys[] = {
