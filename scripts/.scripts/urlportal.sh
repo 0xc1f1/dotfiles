@@ -48,24 +48,24 @@
 
 
 BROWSERCLI="w3m"
-BROWSER="firefox --private-window"
+BROWSER="brave"
 # DEFAULT="xdg-open"
 # DEFAULT="chromium --incognito"
 # DEFAULT="w3m"
 DEFAULT="$BROWSERCLI"
 ## long videos like youtube
 # VIDEO_QUEUE="tsp mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-53"
-VIDEO_QUEUE="$HOME/.scripts/mpv"
+VIDEO_QUEUE="$HOME/.scripts/mpv-script"
 ## short videos/animated gif clips
 #VIDEO_CLIP="mpv --loop --quiet --ontop --no-border --force-window --autofit=900x600 --geometry=-15+60"
-VIDEO_CLIP="$HOME/.scripts/mpv"
+VIDEO_CLIP="$HOME/.scripts/mpv-script"
 IMAGEGUI="sxiv"
 # IMAGECLI="w3m /usr/lib/w3m/cgi-bin/treat_as_url.cgi -o display_image=1 -o imgdisplay=/usr/lib/w3m/w3mimgdisplay"
 IMAGECLI="w3m -o display_image=1 -o imgdisplay=w3mimgdisplay"
 # IMAGECLI="fbi"
 TORRENTCLI="transmission-remote --add"
 # LIVEFEED='streamlink -p "mpv --cache 2048 --ontop --no-border --force-window --autofit=500x280 --geometry=-15-60"'
-LIVEFEED="$HOME/.scripts/mpv"
+LIVEFEED="$HOME/.scripts/mpv-script"
 DDL_PATH=~/Downloads/plowshare
 DDL_QUEUE_FAST=~/.config/plowshare/queuefast.txt
 
@@ -81,7 +81,7 @@ case "$url" in
     *v.redd.it/*|*video.twimg.com/*|*dailymotion.com*)
         nohup $VIDEO_CLIP "$url" > /dev/null 2>&1 &
         ;;
-    *youtube.com/watch*|*youtu.be/*|*clips.twitch.tv/*|*livestreamfails.com/*)
+    *youtube.com/watch*|*youtu.be/*|*clips.twitch.tv/*|*livestreamfails.com/*|*odysee.com/*)
         $VIDEO_QUEUE "$url"
         ;;
     *twitch.tv/*)

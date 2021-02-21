@@ -45,14 +45,12 @@ export BROWSER="/usr/bin/urlportal.sh"
 autoload -U colors && colors
 #PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 PS1="%F{red}%~ %f> "
-alias fd='nvim'
-alias jk='cd'
-alias cl='clear'
 alias ls='ls --color -F'
 alias la='ls -A'
 alias install='sudo pacman -S'
 alias search='sudo pacman -Ss'
-alias upgrade='sudo pacman -Su --noconfirm'
+alias upgrade='sudo pacman -Syu --noconfirm'
+alias sync='sudo pacman -Sy'
 alias remove='sudo pacman -R'
 alias xclip='xclip -selection c'
 alias ytmp3='youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s"'
@@ -60,6 +58,8 @@ alias ytdl='youtube-dl -o "%(title)s.%(ext)s"'
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
 alias grep='grep --color=auto'
 alias torsocks='torsocks -i'
+alias paru='paru --bottomup'
+alias ctl='sudo systemctl'
 
 # Basically just Luke Smiths zsh config
 
@@ -90,22 +90,22 @@ bindkey -v '^?' backward-delete-char
 function zle-keymap-select {
   if [[ ${KEYMAP} == vicmd ]] ||
      [[ $1 = 'block' ]]; then
-    echo -ne '\e[1 q'
+    echo -ne '\e[0 q'
   elif [[ ${KEYMAP} == main ]] ||
        [[ ${KEYMAP} == viins ]] ||
        [[ ${KEYMAP} = '' ]] ||
        [[ $1 = 'beam' ]]; then
-    echo -ne '\e[5 q'
+    echo -ne '\e[0 q'
   fi
 }
 zle -N zle-keymap-select
 zle-line-init() {
     zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne "\e[5 q"
+    echo -ne "\e[0 q"
 }
 zle -N zle-line-init
-echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+echo -ne '\e[0 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[0 q' ;} # Use beam shape cursor for each new prompt.
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
