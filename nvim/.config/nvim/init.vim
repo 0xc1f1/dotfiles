@@ -37,6 +37,8 @@ nnoremap J :tabp<CR>
 nnoremap E $
 nnoremap B 0
 
+nnoremap ev :tabe ~/.config/nvim/init.vim<CR>
+
 let s:hidden_all = 0
 function! ToggleHiddenAll()
     if s:hidden_all  == 0
@@ -56,10 +58,16 @@ endfunction
 call ToggleHiddenAll()
 nnoremap <S-h> :call ToggleHiddenAll()<CR>
 
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-p>"
+let g:UltiSnipsJumpBackwardTrigger="<c-o>"
+
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/goyo.vim'
 Plug 'vim-utils/vim-man'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 call plug#end()
 
 

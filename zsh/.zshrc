@@ -9,6 +9,8 @@ export GOPATH=$GOPATH:$HOME/go
 
 export RTV_BROWSER=$HOME"/.scripts/urlportal.sh"
 
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
 # CLEAN $HOME
 #if ! pgrep -x ssh-agent > /dev/null
 #then
