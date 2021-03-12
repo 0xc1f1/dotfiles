@@ -20,7 +20,7 @@ set hidden
 set noerrorbells
 set nowrap
 
-call matchadd('ColorColumn', '\%81v', 100)
+" call matchadd('ColorColumn', '\%81v', 100)
 " set colorcolumn=80
 
 nnoremap ; :
@@ -59,8 +59,8 @@ call ToggleHiddenAll()
 nnoremap <S-h> :call ToggleHiddenAll()<CR>
 
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-p>"
-let g:UltiSnipsJumpBackwardTrigger="<c-o>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
