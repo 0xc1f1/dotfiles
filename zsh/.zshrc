@@ -6,6 +6,7 @@ f() {
 export GOPATH=$HOME/golib
 export PATH=$PATH:GOPATH/bin
 export GOPATH=$GOPATH:$HOME/go
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 export RTV_BROWSER=$HOME"/.scripts/urlportal.sh"
 
