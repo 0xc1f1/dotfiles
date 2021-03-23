@@ -1,6 +1,6 @@
 #!/bin/bash
 [[ -n $1 ]] && cd $1
-tmpFile="/tmp/"$(head /dev/random | tr -dc A-Za-z0-9 | head -c 13 ; echo '')
+tmpFile="/tmp/"$(head -c 13 /dev/urandom | tr -dc A-Za-z0-9 ; echo '')
 touch $tmpFile
 for filename in *; do echo "$filename"; done > $tmpFile
 vim $tmpFile

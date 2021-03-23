@@ -1,6 +1,7 @@
 auto-reload yes
 reload-time 1
 reload-threads 100
+refresh-on-startup yes
 
 browser "brave"
 bind-key f macro-prefix
@@ -25,5 +26,6 @@ bind-key a quit
 
 # proxy
 use-proxy yes
+proxy-auth newsboat:newsboat
 proxy-type socks5h
 proxy 127.0.0.1:9050

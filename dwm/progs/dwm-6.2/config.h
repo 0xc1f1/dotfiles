@@ -7,15 +7,13 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = {	"Hack:pixelsize=11:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Hack:pixelsize=11:antialias=true:autohint=true";
+static const char *fonts[]          = {	"SF mono:pixelsize=11:antialias=false:autohint=true" };
+static const char dmenufont[]       = "SF mono:pixelsize=11:antialias=false:autohint=true";
 static const char col_gray1[]       = "#000000";
-static const char col_gray2[]       = "#fc0000";
+static const char col_gray2[]       = "#657b83";
 static const char col_gray3[]       = "#ffffff";
-//static const char col_gray4[]       = "#eeeeee";
 static const char col_gray4[]       = "#ffffff";
-//static const char col_cyan[]        = "#cc4c02";
-static const char col_cyan[]        = "#fc3a3a";
+static const char col_cyan[]        = "#657b83";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray1 },
@@ -73,7 +71,9 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "terminal", NULL };
 static const char *newsboatcmd[]  = { "terminal","-e", "newsboat", NULL };
 static const char *emailcmd[]  = { "terminal", "-e", "neomutt", NULL };
+
 static const char *ncmpcppcmd[]  = { "terminal", "-e", "ncmpcpp", NULL };
+
 static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL };
 static const char *browsercmd[] = { "/home/anton/.scripts/start_browser", NULL };
 static const char *torbrowsercmd[] = { "torbrowser-launcher", NULL };
@@ -96,6 +96,9 @@ static Key keys[] = {
 	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
 	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
 	{ Mod1Mask|ShiftMask,           XK_o,      spawn,          {.v = ncmpcppcmd } },
+	{ Mod1Mask|ShiftMask,                     XK_r,      spawn,		   SHCMD("mpc listall | shuf -n 1 | mpc add; mpc play") },
+	{ Mod1Mask,                     XK_e,      spawn,		   SHCMD("mpc next") },
+
 
 	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-); pkill -RTMIN+10 dwmblocks") },
 	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+); pkill -RTMIN+10 dwmblocks") },

@@ -1,2 +1,0 @@
-#!/bin/sh
-/usr/bin/ungoogled-chromium --proxy-server="socks5://10.64.0.1:1080"
