@@ -1,5 +1,7 @@
 autocmd BufWritePost *.tex silent! execute "!pdflatex % >/dev/null 2>&1 &" | redraw!
 
+source $HOME/.config/nvim/plug-config/coc.vim
+
 " set nocompatible              " be iMproved, required
 " filetype off                  " required
 
@@ -63,11 +65,12 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'junegunn/goyo.vim'
 Plug 'vim-utils/vim-man'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'peterhoeg/vim-qml'
 call plug#end()
 
 

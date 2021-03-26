@@ -19,6 +19,19 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 #fi
 
 
+first-tab() {
+    if [[ $#BUFFER == 0 ]]; then
+        BUFFER="cd "
+        CURSOR=3
+        zle list-choices
+    else
+        zle expand-or-complete
+    fi
+}
+zle -N first-tab
+bindkey '^I' first-tab
+
+
 PATH="$PATH:$HOME/.local/bin"
 export XDG_DATA_HOME=$HOME"/.local/share"
 export XDG_CONFIG_HOME=$HOME"/.config"
@@ -52,7 +65,7 @@ alias ls='ls --color -F'
 alias la='ls -A'
 alias i='sudo pacman -S'
 alias s='sudo pacman -Ss'
-alias u='sudo pacman -Syu --noconfirm'
+alias u='sudo paru -Syu'
 alias r='sudo pacman -R'
 alias e='nvim'
 alias xclip='xclip -selection c'
