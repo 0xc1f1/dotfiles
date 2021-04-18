@@ -7,7 +7,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 //static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-static char *font = "SF mono:pixelsize=18:antialias=true:autohint=true";
+static char *font = "SF mono:pixelsize=13:antialias=true:autohint=true";
 static int borderpx = 10;
 
 /*
@@ -151,8 +151,8 @@ static MouseShortcut mshortcuts[] = {
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\033[6;2~"}, 0, -1 },
 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
-	{ Button4,              XK_NO_MOD, ttysend,      "\031" },
-	{ Button5,              XK_NO_MOD,  ttysend,     "\005" },
+	{ Button4,              XK_NO_MOD,ttysend,      {.s = "\031"} },
+	{ Button5,              XK_NO_MOD,ttysend,      {.s = "\005"} },
 };
 
 MouseKey mkeys[] = {
@@ -179,6 +179,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 };
 
 /*

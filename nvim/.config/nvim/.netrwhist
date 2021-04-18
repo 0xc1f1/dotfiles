@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/home/anton/dotfiles/nvim/.config/nvim/plug-config'
+let g:netrw_dirhist_1='/usr/share/nginx/html'
+let g:netrw_dirhist_0='/usr/share/nginx'
+let g:netrw_dirhist_9='/usr/share/nginx/html'
+let g:netrw_dirhist_8='/home/anton/.config/nvim'
+let g:netrw_dirhist_7='/home/anton/Programs/st-0.8.4'
+let g:netrw_dirhist_6='/home/anton/.config/alacritty'
+let g:netrw_dirhist_5='/home/anton/prj/proxy'
+let g:netrw_dirhist_4='/home/anton/prj/chess_server'
+let g:netrw_dirhist_3='/home/anton/prj/serenity/Userland/Applications/Browser'

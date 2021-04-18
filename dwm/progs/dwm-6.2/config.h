@@ -78,6 +78,10 @@ static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL 
 static const char *browsercmd[] = { "/home/anton/.scripts/start_browser", NULL };
 static const char *torbrowsercmd[] = { "torbrowser-launcher", NULL };
 
+static const char *clipboardcmd[] = { "/home/anton/.scripts/open_from_clipboard", NULL };
+
+static const char *dwmblockscmd[] = { "/home/anton/.scripts/restart_dwmblocks", NULL };
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 
@@ -96,8 +100,10 @@ static Key keys[] = {
 	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
 	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
 	{ Mod1Mask|ShiftMask,           XK_o,      spawn,          {.v = ncmpcppcmd } },
+	{ ControlMask|ShiftMask,		XK_d,      spawn,          {.v = clipboardcmd } },
 	{ Mod1Mask|ShiftMask,                     XK_r,      spawn,		   SHCMD("mpc listall | shuf -n 1 | mpc add; mpc play") },
-	{ Mod1Mask,                     XK_e,      spawn,		   SHCMD("mpc next") },
+	{ Mod1Mask|ShiftMask,                     XK_e,      spawn,		   SHCMD("mpc next") },
+	{ Mod1Mask,                     XK_b,      spawn,		   {.v = dwmblockscmd} },
 
 
 	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-); pkill -RTMIN+10 dwmblocks") },

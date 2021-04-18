@@ -61,21 +61,24 @@ export BROWSER="/usr/bin/urlportal.sh"
 autoload -U colors && colors
 #PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 PS1="%F{red}%~ %f> "
+alias idea='_JAVA_AWT_WM_NONREPARENTING=1 idea'
 alias ls='ls --color -F'
 alias la='ls -A'
 alias i='sudo pacman -S'
 alias s='sudo pacman -Ss'
-alias u='sudo paru -Syu'
+alias u='sudo paru -Syu --noconfirm'
 alias r='sudo pacman -R'
 alias e='nvim'
 alias xclip='xclip -selection c'
-alias ytmp3='youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s"'
+alias mpf="mpv \"\$(fzf)\""
+alias ytmp3='youtube-dl -f bestaudio -o "%(title)s.%(ext)s"'
 alias ytdl='youtube-dl -o "%(title)s.%(ext)s"'
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
 alias grep='grep --color=auto'
 alias torsocks='torsocks -i'
 alias paru='paru --bottomup'
 alias ctl='sudo systemctl'
+alias ytfzf='ytfzf -t'
 
 # Basically just Luke Smiths zsh config
 
