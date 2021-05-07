@@ -7,4 +7,5 @@ Plug 'honza/vim-snippets'
 Plug 'peterhoeg/vim-qml'
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'drewtempelmeyer/palenight.vim'
 call plug#end()

@@ -10,7 +10,7 @@ nnoremap <S-k> :tabn<CR>
 nnoremap <S-j> :tabp<CR>
 
 " open the neovim config
-nnoremap ev :tabe ~/.config/nvim/init.vim<CR>
+nnoremap ev :tabe ~/.config/nvim/<CR>
 
 " reload(source) the neovim config
 nnoremap er :so ~/.config/nvim/init.vim<CR>

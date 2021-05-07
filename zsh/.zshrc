@@ -18,6 +18,8 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 #	eval $(keychain --eval $HOME/.ssh/antonkling) && clear
 #fi
 
+pfetch | lolcat
+
 
 first-tab() {
     if [[ $#BUFFER == 0 ]]; then

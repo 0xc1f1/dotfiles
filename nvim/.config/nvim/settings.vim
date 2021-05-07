@@ -24,3 +24,7 @@ set noshowmode
 set noruler
 set laststatus=0
 set noshowcmd
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+set ttimeoutlen=0
