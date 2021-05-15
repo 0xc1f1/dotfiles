@@ -8,4 +8,5 @@ Plug 'peterhoeg/vim-qml'
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()

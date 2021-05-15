@@ -81,6 +81,7 @@ alias torsocks='torsocks -i'
 alias paru='paru --bottomup'
 alias ctl='sudo systemctl'
 alias ytfzf='ytfzf -t'
+alias element='dangermatrix --proxy-server=socks5://127.0.0.1:9050'
 
 # Basically just Luke Smiths zsh config
 

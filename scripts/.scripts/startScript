@@ -3,4 +3,8 @@ xwallpaper --stretch .config/wallpaper
 newsboat -x reload &
 xdg-mime default org.pwmt.zathura.desktop application/pdf
 python ~/Projects/livestreamFails/getNew.py &
+picom -b &
+
+mpd ; mpc random on ; mpc ls | mpc add ; mpc play ; mpc next
+
 dwmblocks &

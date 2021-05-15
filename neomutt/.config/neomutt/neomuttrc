@@ -6,5 +6,5 @@ source ~/.config/neomutt/mappings
 
 # Accounts
 
-source ~/.config/neomutt/accounts/school
-folder-hook $folder 'source ~/.config/neomutt/accounts/school
+source ~/.config/neomutt/accounts/ashes
+folder-hook $folder 'source ~/.config/neomutt/accounts/ashes
