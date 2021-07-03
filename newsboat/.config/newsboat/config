@@ -26,6 +26,6 @@ bind-key a quit
 
 # proxy
 use-proxy yes
-proxy-auth newsboat:newsboat
+proxy-auth newsboat1:newsboat1
 proxy-type socks5h
 proxy 127.0.0.1:9050

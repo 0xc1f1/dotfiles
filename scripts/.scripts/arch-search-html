@@ -1,1 +1,0 @@
- wiki-search-html $(wiki-search-html --all | dmenu -i | sed "s/.* //g")

@@ -3,9 +3,9 @@ nnoremap : ;
 
 nnoremap <M-d> :!make<CR>
 nnoremap <M-r> :!make run<CR>
-nnoremap <M-o> :tabe
-nnoremap <M-s> :w<CR>
 
+" tab stuff
+nnoremap <M-o> :tabe
 nnoremap <S-k> :tabn<CR>
 nnoremap <S-j> :tabp<CR>
 
@@ -14,10 +14,6 @@ nnoremap ev :tabe ~/.config/nvim/<CR>
 
 " reload(source) the neovim config
 nnoremap er :so ~/.config/nvim/init.vim<CR>
-
-map gh <Plug>(Vman)
-
-nnoremap <S-h> :call ToggleHiddenAll()<CR>
 
 " UltiSnips keybinds
 let g:UltiSnipsExpandTrigger="<tab>"

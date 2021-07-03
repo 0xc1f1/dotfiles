@@ -1,5 +1,5 @@
 #!/bin/bash
 selected=$HOME"/images/wallpapers/wallpapers/"$(ls -1 $HOME/images/wallpapers/wallpapers | dmenu -l 15)
-rm .config/wallpaper
-ln -s $selected .config/wallpaper
-xwallpaper --stretch .config/wallpaper
+rm $HOME/.config/wallpaper
+ln -s $selected $HOME/.config/wallpaper
+xwallpaper --stretch $HOME/.config/wallpaper

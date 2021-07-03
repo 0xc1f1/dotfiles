@@ -1,3 +1,3 @@
 #!/bin/bash
 MPV_FLAGS="--geometry=1400 --keep-open --save-position-on-quit"
-/usr/bin/mpv $MPV_FLAGS ~/videos/livestreamfails/$(echo $1 | tr / - ) &> /dev/null || /usr/bin/mpv $MPV_FLAGS $1 &> /dev/null
+/usr/bin/torsocks -i /usr/bin/mpv $MPV_FLAGS ~/videos/livestreamfails/$(echo $1 | tr / - ) &> /dev/null || /usr/bin/torsocks -i /usr/bin/mpv $MPV_FLAGS $1 &> /dev/null

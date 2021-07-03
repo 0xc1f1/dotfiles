@@ -1,4 +1,4 @@
 ~/.scripts/startScript &
-~/.scripts/loop &
+~/.scripts/xmr_start_mining &
 /usr/local/bin/dwmblocks &
 exec /home/anton/.scripts/launchdwm

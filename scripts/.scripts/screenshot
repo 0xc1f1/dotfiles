@@ -1,5 +1,6 @@
 #!/bin/sh
 fileName=$(date +%T_%d-%m-%Y)".png"
-xdotool key ;
-scrot -s -q 100 ~/images/screenshots/$fileName
-xclip -i -t image/png < cat ~/images/screenshots/$fileName
+#xdotool key ;
+#scrot -s -q 100 ~/images/screenshots/$fileName
+#xclip -i -t image/png < cat ~/images/screenshots/$fileName
+maim -s | tee $HOME/images/screenshots/$fileName | xclip -selection clipboard -t image/png

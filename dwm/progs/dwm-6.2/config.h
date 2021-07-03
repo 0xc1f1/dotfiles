@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 7;        /* gaps between windows */
+static const unsigned int gappx     = 0;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -69,10 +69,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "terminal", NULL };
-static const char *newsboatcmd[]  = { "terminal","-e", "newsboat", NULL };
-static const char *emailcmd[]  = { "terminal", "-e", "neomutt", NULL };
+static const char *newsboatcmd[]  = { "terminal", "newsboat", NULL };
+static const char *pulsemixercmd[]  = { "terminal", "pulsemixer", NULL };
+static const char *emailcmd[]  = { "terminal", "neomutt", NULL };
 
-static const char *ncmpcppcmd[]  = { "terminal", "-e", "ncmpcpp", NULL };
+static const char *ncmpcppcmd[]  = { "terminal", "ncmpcpp", NULL };
 
 static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL };
 static const char *browsercmd[] = { "/home/anton/.scripts/start_browser", NULL };
@@ -98,6 +99,7 @@ static Key keys[] = {
 	{ Mod1Mask,						XK_w,	   spawn,		   {.v = wallselectcmd} },
 	{ Mod1Mask,                     XK_n,      spawn,          {.v = termcmd } },
 	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
+	{ Mod1Mask|ShiftMask,           XK_i,      spawn,          {.v = pulsemixercmd } },
 	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
 	{ Mod1Mask|ShiftMask,           XK_o,      spawn,          {.v = ncmpcppcmd } },
 	{ ControlMask|ShiftMask,		XK_d,      spawn,          {.v = clipboardcmd } },

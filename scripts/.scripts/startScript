@@ -3,8 +3,12 @@ xwallpaper --stretch .config/wallpaper
 newsboat -x reload &
 xdg-mime default org.pwmt.zathura.desktop application/pdf
 python ~/Projects/livestreamFails/getNew.py &
-picom -b &
+$HOME/.scripts/xmr_start_mining &
+#picom -b &
+
+echo "power on\nquit" | bluetoothctl
 
 mpd ; mpc random on ; mpc ls | mpc add ; mpc play ; mpc next
 
 dwmblocks &
+~/.scripts/bluetooth_connect

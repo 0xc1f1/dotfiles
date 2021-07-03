@@ -18,7 +18,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 #	eval $(keychain --eval $HOME/.ssh/antonkling) && clear
 #fi
 
-pfetch | lolcat
+#pfetch | lolcat
 
 
 first-tab() {
@@ -33,6 +33,7 @@ first-tab() {
 zle -N first-tab
 bindkey '^I' first-tab
 
+setopt auto_cd
 
 PATH="$PATH:$HOME/.local/bin"
 export XDG_DATA_HOME=$HOME"/.local/share"
@@ -68,9 +69,10 @@ alias ls='ls --color -F'
 alias la='ls -A'
 alias i='sudo pacman -S'
 alias s='sudo pacman -Ss'
-alias u='sudo paru -Syu --noconfirm'
+alias u='sudo paru -Syu --noconfirm ; paru -Syu --noconfirm'
 alias r='sudo pacman -R'
-alias e='nvim'
+alias e=$EDITOR
+alias re='sudoedit'
 alias xclip='xclip -selection c'
 alias mpf="mpv \"\$(fzf)\""
 alias ytmp3='youtube-dl -f bestaudio -o "%(title)s.%(ext)s"'
