@@ -1,8 +1,3 @@
-f() {
-    fff "$@"
-    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
-}
-
 export GOPATH=$HOME/golib
 export PATH=$PATH:GOPATH/bin
 export GOPATH=$GOPATH:$HOME/go
@@ -11,15 +6,6 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export RTV_BROWSER=$HOME"/.scripts/urlportal.sh"
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-# CLEAN $HOME
-#if ! pgrep -x ssh-agent > /dev/null
-#then
-#	eval $(keychain --eval $HOME/.ssh/antonkling) && clear
-#fi
-
-#pfetch | lolcat
-
 
 first-tab() {
     if [[ $#BUFFER == 0 ]]; then
@@ -62,35 +48,31 @@ export BROWSER="/usr/bin/urlportal.sh"
 
 # Enable colors and change prompt:
 autoload -U colors && colors
-#PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
-PS1="%F{red}%~ %f> "
+#PS1="%F{blue}%~ %f> "
+PS1="%/ $ "
 alias idea='_JAVA_AWT_WM_NONREPARENTING=1 idea'
-alias ls='ls --color -F'
+alias ls='ls -sh1 --color -F'
+alias l='ls -l'
 alias la='ls -A'
-alias i='sudo pacman -S'
+alias x='exit'
+alias i='sudo pacman -S --noconfirm'
 alias s='sudo pacman -Ss'
 alias u='sudo paru -Syu --noconfirm ; paru -Syu --noconfirm'
 alias r='sudo pacman -R'
 alias e=$EDITOR
-alias re='sudoedit'
+alias se='sudoedit'
+alias c='cat'
 alias xclip='xclip -selection c'
 alias mpf="mpv \"\$(fzf)\""
 alias ytmp3='youtube-dl -f bestaudio -o "%(title)s.%(ext)s"'
-alias ytdl='youtube-dl -o "%(title)s.%(ext)s"'
+alias ytdl='yt-dlp -o "%(title)s.%(ext)s"'
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
 alias grep='grep --color=auto'
 alias torsocks='torsocks -i'
 alias paru='paru --bottomup'
 alias ctl='sudo systemctl'
 alias ytfzf='ytfzf -t'
-alias element='dangermatrix --proxy-server=socks5://127.0.0.1:9050'
-
-# Basically just Luke Smiths zsh config
-
-# History in cache directory:
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=~/.cache/zsh/history
+alias gpgclip='xclip -o | gpg'
 
 # Basic auto/tab complete:
 autoload -U compinit

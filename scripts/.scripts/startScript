@@ -1,10 +1,8 @@
 #!/bin/sh
-xwallpaper --stretch .config/wallpaper
+xwallpaper --stretch .config/wallpaper &
 newsboat -x reload &
 xdg-mime default org.pwmt.zathura.desktop application/pdf
-python ~/Projects/livestreamFails/getNew.py &
-$HOME/.scripts/xmr_start_mining &
-#picom -b &
+xset r rate 300 50
 
 echo "power on\nquit" | bluetoothctl
 

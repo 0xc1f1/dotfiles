@@ -6,8 +6,6 @@ autocmd BufWritePost *.ms silent! execute "!eqn % -Tpdf | groff -Tpdf -ms > main
 
 syntax on
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-
 set exrc
 set secure
 set number

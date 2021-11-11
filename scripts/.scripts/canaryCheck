@@ -1,22 +1,79 @@
 #!/bin/bash
 
-# MAKE SURE THAT THE FOLLOWING FINGERPRINT IS CORRECT
+# This is a simple and shitty bash script that makes it easy
+# to verify the Whonix and dark.fail canary.
+
+return_code=0
+
+# MAKE SURE THAT THIS INFORMATION IS CORRECT
 whonixFingerprint="6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48"
+whonixSignify="untrusted comment: Patrick Schleizer adrelanos@riseup.net signify public key\nRWQ6KRormNEETq+M8IysxRe/HAWlqZRlO8u7ACIiv5poAW0ztsirOjCQ"
+darkfailFingerprint="7D6D036C2ED1E8ECA3133B5D65C82325B01972C5"
 
+(torsocks wget -O /tmp/whonix-canary.txt http://download.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/whonixdevelopermetafiles/canary/canary.txt &> /dev/null || $(echo "[ERROR] Download of whonix canary.txt FAILED."; exit 1)) & PID1=$!
+torsocks wget -O /tmp/whonix-canary.txt.asc http://download.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/whonixdevelopermetafiles/canary/canary.txt.asc &> /dev/null || $(echo "[ERROR] Download of whonix canary.txt.asc FAILED."; exit 1)& PID2=$!
+torsocks wget -O /tmp/whonix-canary.txt.sig http://download.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/whonixdevelopermetafiles/canary/canary.txt.sig &> /dev/null || $(echo "[ERROR] Download of whonix canary.txt.sig FAILED."; exit 1)& PID3=$!
+torsocks wget -O /tmp/darkfail-canary.txt http://darkfailenbsdla5mal2mxn2uz66od5vtzd5qozslagrfzachha3f3id.onion/canary.txt &> /dev/null || $(echo "[ERROR] Download of dark.fail canary.txt FAILED."; exit 1)& PID4=$!
+
+wait $PID1
+wait $PID2
+wait $PID3
+wait $PID4
+
+# --- WHONIX ---
 # Downloads the canary
-wget -O /tmp/whonix-canary.txt https://raw.githubusercontent.com/Whonix/canary/master/canary.txt &> /dev/null || $(echo "[ERROR] Download of canary.txt FAILED."; exit 1)
-wget -O /tmp/whonix-canary.txt.asc https://raw.githubusercontent.com/Whonix/canary/master/canary.txt.asc &> /dev/null || $(echo "[ERROR] Download of canary.txt.asc FAILED."; exit 1)
 
-# Verifies the signature and shows you the canary using less if it is correct
 echo -n "" > /tmp/sign
-gpg --verify /tmp/whonix-canary.txt.asc /tmp/whonix-canary.txt &> /tmp/sign && grep "$whonixFingerprint" /tmp/sign > /dev/null &&\
+
+# Verify PGP signature
+gpg --verify /tmp/whonix-canary.txt.asc /tmp/whonix-canary.txt &> /tmp/sign &&\
+grep -q "$whonixFingerprint" /tmp/sign &&\
+# Verify signify signature
+signify -V -p <(echo -e $whonixSignify) -x /tmp/whonix-canary.txt.sig -m /tmp/whonix-canary.txt &&\
 less /tmp/whonix-canary.txt &&\
-echo "[OK] The Whonix canary is correctly signed" && exit 0\
-|| echo "[WARNING] The Whonix canary does not appear to be correctly signed. Make sure that you have imported the correct key. Do not trust anything written in the canary! The canary is located at /tmp/whonix-canary.txt" ; exit 1
+echo "[OK] The Whonix canary is correctly signed" || echo "[WARNING] The Whonix canary does not appear to be correctly signed. The canary is located at /tmp/whonix-canary.txt" && return_code=1
 
 # Check whether certain sentences have changed in the canary.
-warrantString="2. No warrants have ever been served on the Whonix Project; for example, to hand out the private signing keys or to introduce backdoors."
-grep -Fxq $warrantString /tmp/whonix-canary.txt || $(echo "[WARNING] The Whonix canary is does not mention \"No warrants have ever been served on the Whonix Project;\". The canary file can be read at /tmp/whonix-canary.txt" ; exit 1)
+warrantString="The Whonix Project has never added any backdoor to any artifact."
+grep -q "$warrantString" /tmp/whonix-canary.txt || echo "[WARNING] The Whonix canary does not mention \"$warrantString\". The canary file can be read at /tmp/whonix-canary.txt" && return_code=1
+
+warrantString="The Whonix Project has never turned over any signing key."
+grep -q "$warrantString" /tmp/whonix-canary.txt || echo "[WARNING] The Whonix canary does not mention \"$warrantString\". The canary file can be read at /tmp/whonix-canary.txt" && return_code=1
+
+warrantString="The Whonix Project has never knowingly signed any artifact containing any backdoor."
+grep -q "$warrantString" /tmp/whonix-canary.txt || echo "[WARNING] The Whonix canary does not mention \"$warrantString\". The canary file can be read at /tmp/whonix-canary.txt" && return_code=1
+
+warrantString="The Whonix Project has never weakened, compromised, or subverted any of its cryptography."
+grep -q "$warrantString" /tmp/whonix-canary.txt || echo "[WARNING] The Whonix canary does not mention \"$warrantString\". The canary file can be read at /tmp/whonix-canary.txt" && return_code=1
+
+# Verify date
+
+# Grab the date from the file
+date=$(sed "/+0000/ !d" /tmp/whonix-canary.txt)
+unix_time=$(date -d "$date" "+%s")
+diff=$(($(date "+%s") - $unix_time))
+[ $diff -ge $((60*60*24*14)) ] && echo "[WARNING] Whonix time check FAILED." && return_code=1
+
+# --- dark.fail ---
+
+echo -n "" > /tmp/sign
+
+# Verify PGP signature
+gpg --verify /tmp/darkfail-canary.txt &> /tmp/sign &&\
+grep -q "$darkfailFingerprint" /tmp/sign &&\
+less /tmp/darkfail-canary.txt &&\
+echo "[OK] The dark.fail canary is correctly signed"\
+|| echo "[WARNING] The dark.fail canary does not appear to be correctly signed. The canary is located at /tmp/darkfail-canary.txt" && return_code=1
+
+# Verify date
+
+# Grab the date from the file
+date=$(sed "/Today is / !d;s/Today is //;s/\.//" /tmp/darkfail-canary.txt)
+unix_time=$(date -d "$date" "+%s")
+diff=$(($(date "+%s") - $unix_time))
+[ $diff -ge $((60*60*24*14)) ] && echo "[WARNING] dark.fail time check FAILED." && return_code=1
+
+exit $return_code
 
 # OPTIONAL: Remove all the files after verifying them
-# yes | rm /tmp/whonix-canary.txt* &> /dev/null
+# yes | rm /tmp/whonix-canary.txt* /tmp/darkfail-canary.txt &> /dev/null

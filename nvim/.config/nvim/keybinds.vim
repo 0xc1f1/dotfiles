@@ -4,6 +4,8 @@ nnoremap : ;
 nnoremap <M-d> :!make<CR>
 nnoremap <M-r> :!make run<CR>
 
+norm Q gq
+
 " tab stuff
 nnoremap <M-o> :tabe
 nnoremap <S-k> :tabn<CR>

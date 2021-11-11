@@ -1,19 +1,19 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 0;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = {	"SF mono:pixelsize=11:antialias=false:autohint=true" };
-static const char dmenufont[]       = "SF mono:pixelsize=11:antialias=false:autohint=true";
-static const char col_gray1[]       = "#000000";
-static const char col_gray2[]       = "#657b83";
-static const char col_gray3[]       = "#ffffff";
-static const char col_gray4[]       = "#ffffff";
-static const char col_cyan[]        = "#657b83";
+static const char *fonts[]          = {	"Fira Code:pixelsize=11:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Fira Code:pixelsize=11:antialias=true:autohint=true";
+static const unsigned int borderpx  = 1;        // border pixel of windows
+static const unsigned int gappx     = 10;       // gaps between windows
+static const unsigned int snap      = 5;		// snap pixel
+static const int swallowfloating    = 0;        // 1 means swallow floating windows by default
+static const int showbar            = 1;        // 0 means no bar
+static const int topbar             = 1;        // 0 means bottom bar
+static const char col_gray1[]       = "#21222c"; // unselected window and border background
+static const char col_gray2[]       = "#ffffff"; // selected window
+static const char col_gray3[]       = "#ffffff"; // text
+static const char col_gray4[]       = "#ffffff"; // window text
+static const char col_cyan[]        = "#3366ff"; // selected tag
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray1 },
@@ -35,7 +35,6 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-//	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 };
@@ -57,92 +56,86 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ Mod1Mask,             KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|Mod1Mask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ Mod1Mask|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|Mod1Mask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ Mod1Mask,					KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY|Mod1Mask,          KEY,      toggleview,     {.ui = 1 << TAG} }, \
+	{ Mod1Mask|ShiftMask,		KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY|Mod1Mask|ShiftMask,KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#define SCRIPTS_FOLDER "/home/anton/.scripts"
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "terminal", NULL };
-static const char *newsboatcmd[]  = { "terminal", "newsboat", NULL };
-static const char *pulsemixercmd[]  = { "terminal", "pulsemixer", NULL };
-static const char *emailcmd[]  = { "terminal", "neomutt", NULL };
+static const char *dmenucmd[]		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *termcmd[]		= { "terminal", NULL };
+static const char *emailcmd[]		= { "terminal", "neomutt", NULL };
+static const char *ncmpcppcmd[]		= { "terminal", "ncmpcpp", NULL };
+static const char *newsboatcmd[]	= { "terminal", "newsboat", NULL };
+static const char *pulsemixercmd[]	= { "terminal", "pulsemixer", NULL };
 
-static const char *ncmpcppcmd[]  = { "terminal", "ncmpcpp", NULL };
+static const char *torbrowsercmd[]	= { "torbrowser-launcher", NULL };
 
-static const char *wallselectcmd[]  = { "/home/anton/.scripts/wallselect", NULL };
-static const char *browsercmd[] = { "/home/anton/.scripts/start_browser", NULL };
-static const char *torbrowsercmd[] = { "torbrowser-launcher", NULL };
-
-static const char *clipboardcmd[] = { "/home/anton/.scripts/open_from_clipboard", NULL };
-
-static const char *dwmblockscmd[] = { "/home/anton/.scripts/restart_dwmblocks", NULL };
+static const char *clipboardcmd[]	= { SCRIPTS_FOLDER"open_from_clipboard", NULL };
+static const char *wallselectcmd[]  = { SCRIPTS_FOLDER"/wallselect", NULL };
+static const char *browsercmd[]		= { SCRIPTS_FOLDER"/start_browser", NULL };
+static const char *dwmblockscmd[]	= { SCRIPTS_FOLDER"/restart_dwmblocks", NULL };
+static const char *bluetoothcmd[]	= { SCRIPTS_FOLDER"/bluetooth_connect", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-
- /* Swedish chars */
- /* { MODKEY,                       XK_semicolon,      spawn,          {.v = ocmd } },
-	{ MODKEY,                       XK_quotedbl,      spawn,          {.v = acmd } },
-	{ MODKEY,                       XK_bracketleft,      spawn,          {.v = aacmd } },*/
- /* END Swedish chars */
-
-	{ Mod1Mask,						XK_a,	   spawn,          SHCMD("setxkbmap -query | grep 'layout:     us' && setxkbmap se || setxkbmap us") },
-	{ Mod1Mask,                     XK_u,      spawn,          {.v = browsercmd } },
-	{ Mod1Mask|ShiftMask,           XK_u,      spawn,          {.v = torbrowsercmd } },
-	{ Mod1Mask,                     XK_p,      spawn,          {.v = dmenucmd } },
-	{ Mod1Mask,						XK_w,	   spawn,		   {.v = wallselectcmd} },
 	{ Mod1Mask,                     XK_n,      spawn,          {.v = termcmd } },
-	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
-	{ Mod1Mask|ShiftMask,           XK_i,      spawn,          {.v = pulsemixercmd } },
+	{ Mod1Mask,                     XK_p,      spawn,          {.v = dmenucmd } },
 	{ Mod1Mask|ShiftMask,           XK_m,      spawn,          {.v = emailcmd } },
 	{ Mod1Mask|ShiftMask,           XK_o,      spawn,          {.v = ncmpcppcmd } },
+	{ Mod1Mask,                     XK_u,      spawn,          {.v = browsercmd } },
+	{ Mod1Mask|ShiftMask,           XK_n,      spawn,          {.v = newsboatcmd } },
+	{ Mod1Mask,                     XK_b,      spawn,		   {.v = dwmblockscmd } },
+	{ Mod1Mask|ShiftMask,           XK_d,      spawn,          {.v = bluetoothcmd } },
 	{ ControlMask|ShiftMask,		XK_d,      spawn,          {.v = clipboardcmd } },
-	{ Mod1Mask|ShiftMask,                     XK_r,      spawn,		   SHCMD("mpc listall | shuf -n 1 | mpc add; mpc play") },
-	{ Mod1Mask|ShiftMask,                     XK_e,      spawn,		   SHCMD("mpc next") },
-	{ Mod1Mask,                     XK_b,      spawn,		   {.v = dwmblockscmd} },
+	{ Mod1Mask,						XK_w,	   spawn,		   {.v = wallselectcmd } },
+	{ Mod1Mask|ShiftMask,           XK_u,      spawn,          {.v = torbrowsercmd } },
+	{ Mod1Mask|ShiftMask,           XK_i,      spawn,          {.v = pulsemixercmd } },
 
-
-	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-); pkill -RTMIN+10 dwmblocks") },
-	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+); pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask|ShiftMask,           XK_e,      spawn,		   SHCMD("mpc next") },
+	{ Mod1Mask|ShiftMask,			XK_p,	   spawn,          SHCMD("sudo xkill") },
 	{ Mod1Mask, 					XK_m,	   spawn,          SHCMD("mpc toggle; pkill -RTMIN+10 dwmblocks") },
 	{ Mod1Mask|ShiftMask,			XK_z,	   spawn,          SHCMD("mpc volume -5; pkill -RTMIN+10 dwmblocks") },
 	{ Mod1Mask|ShiftMask,			XK_x,	   spawn,          SHCMD("mpc volume +5; pkill -RTMIN+10 dwmblocks") },
-	{ Mod1Mask|ShiftMask,			XK_p,	   spawn,          SHCMD("sudo xkill") },
-	{ Mod1Mask,						XK_s,	   spawn,          SHCMD("sleep 0.2;/home/anton/.scripts/screenshot") },
+	{ Mod1Mask,						XK_a,	   spawn,          SHCMD("setxkbmap -query | grep 'layout:     us' && setxkbmap se || setxkbmap us") },
+	{ Mod1Mask, 					XK_z,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%- || amixer -c 2 sset 'Master' 5%-); pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask,						XK_x,	   spawn,          SHCMD("$(amixer -c 1 sset 'Master' 5%+ || amixer -c 2 sset 'Master' 5%+); pkill -RTMIN+10 dwmblocks") },
+	{ Mod1Mask,						XK_s,	   spawn,          SHCMD("sleep 0.2;"SCRIPTS_FOLDER"/screenshot") },
 
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ Mod1Mask,                     XK_Return, zoom,           {0} },
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+	{ Mod1Mask,						XK_q,      killclient,     {0} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
 	{ Mod1Mask,                     XK_j,      focusstack,     {.i = +1 } },
 	{ Mod1Mask,                     XK_k,      focusstack,     {.i = -1 } },
 	{ Mod1Mask,                     XK_i,      incnmaster,     {.i = +1 } },
 	{ Mod1Mask,                     XK_b,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ Mod1Mask,                     XK_h,      setmfact,       {.f = -0.05} },
 	{ Mod1Mask,                     XK_l,      setmfact,       {.f = +0.05} },
-	{ Mod1Mask,                     XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ Mod1Mask,						XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_Down,   moveresize,     {.v = "0x 25y 0w 0h" } },
-	{ MODKEY,                       XK_Up,     moveresize,     {.v = "0x -25y 0w 0h" } },
 	{ MODKEY,                       XK_Right,  moveresize,     {.v = "25x 0y 0w 0h" } },
-	{ MODKEY,                       XK_Left,   moveresize,     {.v = "-25x 0y 0w 0h" } },
 	{ MODKEY|ShiftMask,             XK_Down,   moveresize,     {.v = "0x 0y 0w 25h" } },
-	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = "0x 0y 0w -25h" } },
 	{ MODKEY|ShiftMask,             XK_Right,  moveresize,     {.v = "0x 0y 25w 0h" } },
+	{ MODKEY,                       XK_Up,     moveresize,     {.v = "0x -25y 0w 0h" } },
+	{ MODKEY,                       XK_Left,   moveresize,     {.v = "-25x 0y 0w 0h" } },
+	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = "0x 0y 0w -25h" } },
 	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = "0x 0y -25w 0h" } },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ Mod1Mask,                     XK_comma,  focusmon,       {.i = -1 } },
 	{ Mod1Mask,                     XK_period, focusmon,       {.i = +1 } },
 	{ Mod1Mask|ShiftMask,           XK_comma,  tagmon,         {.i = -1 } },
@@ -156,7 +149,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
 };
 
 /* button definitions */

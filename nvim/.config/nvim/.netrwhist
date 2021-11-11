@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =8
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/anton/prj/osdev/libc/stdio'
 let g:netrw_dirhist_8='/home/anton/prj/linkagro/text_template.txt'
 let g:netrw_dirhist_7='/home/anton/.scripts'
 let g:netrw_dirhist_6='/home/anton/prj/IMPORTANT/raw'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_3='/home/anton/.config/alacritty'
 let g:netrw_dirhist_2='/home/anton/prj/IMPORTANT/raw'
 let g:netrw_dirhist_1='/home/anton/prj/randCrack'
 let g:netrw_dirhist_0='/home/anton/.config/Element'
-let g:netrw_dirhist_9='/home/anton/.config/neomutt/accounts'

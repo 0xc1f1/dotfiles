@@ -6,5 +6,7 @@ source ~/.config/neomutt/mappings
 
 # Accounts
 
-source ~/.config/neomutt/accounts/ashes
-folder-hook $folder 'source ~/.config/neomutt/accounts/ashes
+#source ~/.config/neomutt/accounts/ashes
+#folder-hook $folder 'source ~/.config/neomutt/accounts/ashes
+source ~/.config/neomutt/accounts/anton
+folder-hook $folder 'source ~/.config/neomutt/accounts/anton

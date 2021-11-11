@@ -1,2 +1,0 @@
-#!/bin/sh
-scp $HOME/keepass/database.kdbx phone:/sdcard/Documents/pcsync.kdbx

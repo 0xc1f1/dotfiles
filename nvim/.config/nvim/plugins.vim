@@ -5,6 +5,5 @@ Plug 'vim-utils/vim-man'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'peterhoeg/vim-qml'
-Plug 'drewtempelmeyer/palenight.vim'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()
